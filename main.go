@@ -1,8 +1,10 @@
 package main
 
 import (
+	"log"
 	"os"
 
+	"github.com/joho/godotenv"
 	"github.com/spf13/cobra"
 )
 
@@ -14,8 +16,11 @@ var (
 )
 
 func init() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 	startCmd := StartCmd()
-
 	// startCmd.Flags().StringVarP(&Server, "server", "s", "", "server-IP for make connection")
 	// startCmd.Flags().StringVarP(&SPort, "port", "p", "", "server-Port for make connection")
 

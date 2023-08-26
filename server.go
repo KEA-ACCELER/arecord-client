@@ -8,7 +8,13 @@ import (
 	qp "github.com/quic-s/quics-protocol"
 )
 
-const ip string = "172.16.236.196"
+var host string
+var port string
+
+func init() {
+	host = os.Getenv("HOST")
+	port = os.Getenv("PORT")
+}
 
 func RestClientMessage(msgtype string, message []byte) {
 	// initialize client
@@ -18,7 +24,7 @@ func RestClientMessage(msgtype string, message []byte) {
 	}
 
 	// start client
-	err = quicClient.Dial(ip + ":18080")
+	err = quicClient.Dial(host + ":" + port)
 	if err != nil {
 		log.Panicln(err)
 	}
@@ -40,7 +46,7 @@ func RestClientFile(filepath string) {
 	}
 
 	// start client
-	err = quicClient.Dial(ip + ":18080")
+	err = quicClient.Dial(host + ":" + port)
 	if err != nil {
 		log.Panicln(err)
 	}
