@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/fsnotify/fsnotify"
 )
@@ -29,16 +30,11 @@ func DirWatchStart() {
 
 				//이벤트가 일어난 파일만 전송
 				filepath := event.Name
-				info, err := os.Stat(filepath)
 
-				if err != nil {
-					log.Panicln(err)
-				}
-
-				if event.Op&fsnotify.Create == fsnotify.Create && info.IsDir() {
+				if info, err := os.Stat(filepath); event.Op&fsnotify.Create == fsnotify.Create && info.IsDir() && err == nil { // 디렉토리 인것
 					watcher.Add(filepath)
 				}
-				if event.Op&fsnotify.Create == fsnotify.Create && !info.IsDir() {
+				if info, err := os.Stat(filepath); event.Op&fsnotify.Create == fsnotify.Create && !info.IsDir() && err == nil { //파일 인 것
 					RestClientFile(filepath)
 				}
 
@@ -60,11 +56,19 @@ func DirWatchStart() {
 		}
 	}()
 
-	// Add a file or directory to watch.
-	err = watcher.Add(getAccelerDir())
-	if err != nil {
-		log.Fatal(err)
-	}
+	// // Add a file or directory to watch.
+	// err = watcher.Add(getAccelerDir())
+
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+
+	filepath.Walk(getAccelerDir(), func(path string, info os.FileInfo, err error) error {
+		if info.IsDir() {
+			watcher.Add(path)
+		}
+		return nil
+	})
 
 	// Wait until the channel is closed.
 	<-done
