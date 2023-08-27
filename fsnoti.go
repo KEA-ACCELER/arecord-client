@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"os"
 
 	"github.com/fsnotify/fsnotify"
 )
@@ -28,8 +29,16 @@ func DirWatchStart() {
 
 				//이벤트가 일어난 파일만 전송
 				filepath := event.Name
+				info, err := os.Stat(filepath)
 
-				if event.Op&fsnotify.Create == fsnotify.Create {
+				if err != nil {
+					log.Panicln(err)
+				}
+
+				if event.Op&fsnotify.Create == fsnotify.Create && info.IsDir() {
+					watcher.Add(filepath)
+				}
+				if event.Op&fsnotify.Create == fsnotify.Create && !info.IsDir() {
 					RestClientFile(filepath)
 				}
 

@@ -6,6 +6,7 @@ require (
 	github.com/fsnotify/fsnotify v1.6.0
 	github.com/joho/godotenv v1.5.1
 	github.com/quic-s/quics-protocol v0.0.0-20230826194912-0e2607fa0ea4
+	github.com/sergi/go-diff v1.0.0
 	github.com/spf13/cobra v1.7.0
 )
 

@@ -36,7 +36,7 @@ func init() {
 
 func main() {
 	os.Exit(Run())
-
+	//Diff()
 }
 
 func StartCmd() *cobra.Command {
