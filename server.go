@@ -53,8 +53,8 @@ func RestClientFile(filepath string) {
 
 	file, err := os.ReadFile(filepath)
 	if err != nil {
-		log.Panicln(err)
-
+		log.Println(err)
+		return
 	}
 	quicClient.SendFile(LocalAbsToRoot(filepath, getAccelerDir()), file)
 

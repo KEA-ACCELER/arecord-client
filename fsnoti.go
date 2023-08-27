@@ -31,10 +31,10 @@ func DirWatchStart() {
 				//이벤트가 일어난 파일만 전송
 				filepath := event.Name
 
-				if info, err := os.Stat(filepath); event.Op&fsnotify.Create == fsnotify.Create && info.IsDir() && err == nil { // 디렉토리 인것
+				if info, err := os.Stat(filepath); event.Op&fsnotify.Create == fsnotify.Create && err == nil && info.IsDir() { // 디렉토리 인것
 					watcher.Add(filepath)
 				}
-				if info, err := os.Stat(filepath); event.Op&fsnotify.Create == fsnotify.Create && !info.IsDir() && err == nil { //파일 인 것
+				if info, err := os.Stat(filepath); event.Op&fsnotify.Create == fsnotify.Create && err == nil && !info.IsDir() { //파일 인 것
 					RestClientFile(filepath)
 				}
 
